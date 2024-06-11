@@ -1,16 +1,25 @@
 
 package telas;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author dmate
  */
 public class Vendas extends javax.swing.JFrame {
-
+    ImageIcon iconBack = new ImageIcon("icon-volta.png");
     public Vendas() {
         initComponents();
+        setIconImage(iconVolta, iconBack);
     }
-
+    private void setIconImage(javax.swing.JLabel label, ImageIcon icon) {
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); 
+        label.setIcon(new ImageIcon(scaledImage));
+        label.setText("");
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -31,9 +40,9 @@ public class Vendas extends javax.swing.JFrame {
         tableCarrinho = new javax.swing.JTable();
         inputQtde = new javax.swing.JSpinner();
         buttonFinalizar = new javax.swing.JButton();
+        iconVolta = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -55,9 +64,7 @@ public class Vendas extends javax.swing.JFrame {
         labelVendedor.setForeground(new java.awt.Color(255, 102, 0));
         labelVendedor.setText("Vendedor");
 
-        inputValor.setBackground(new java.awt.Color(255, 255, 255));
         inputValor.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        inputValor.setForeground(new java.awt.Color(0, 0, 0));
         inputValor.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,9 +72,7 @@ public class Vendas extends javax.swing.JFrame {
             }
         });
 
-        inputProduto.setBackground(new java.awt.Color(255, 255, 255));
         inputProduto.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        inputProduto.setForeground(new java.awt.Color(0, 0, 0));
         inputProduto.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,9 +80,7 @@ public class Vendas extends javax.swing.JFrame {
             }
         });
 
-        inputVendedor.setBackground(new java.awt.Color(255, 255, 255));
         inputVendedor.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        inputVendedor.setForeground(new java.awt.Color(0, 0, 0));
         inputVendedor.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,7 +92,6 @@ public class Vendas extends javax.swing.JFrame {
         labelQtde.setForeground(new java.awt.Color(255, 102, 0));
         labelQtde.setText("Quantidade");
 
-        buttonAdicionar.setBackground(new java.awt.Color(255, 255, 255));
         buttonAdicionar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         buttonAdicionar.setForeground(new java.awt.Color(204, 102, 0));
         buttonAdicionar.setText("Adicionar");
@@ -99,9 +101,7 @@ public class Vendas extends javax.swing.JFrame {
             }
         });
 
-        tableCarrinho.setBackground(new java.awt.Color(255, 255, 255));
         tableCarrinho.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        tableCarrinho.setForeground(new java.awt.Color(0, 0, 0));
         tableCarrinho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -117,13 +117,19 @@ public class Vendas extends javax.swing.JFrame {
         inputQtde.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         inputQtde.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        buttonFinalizar.setBackground(new java.awt.Color(255, 255, 255));
         buttonFinalizar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         buttonFinalizar.setForeground(new java.awt.Color(204, 102, 0));
         buttonFinalizar.setText("Finalizar");
         buttonFinalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonFinalizarActionPerformed(evt);
+            }
+        });
+
+        iconVolta.setText("iconVolta");
+        iconVolta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iconVoltaMouseClicked(evt);
             }
         });
 
@@ -141,7 +147,8 @@ public class Vendas extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelProduto)
                                     .addComponent(inputValor, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelValor))
+                                    .addComponent(labelValor)
+                                    .addComponent(iconVolta))
                                 .addGap(60, 60, 60)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(labelQtde)
@@ -151,7 +158,7 @@ public class Vendas extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(170, 170, 170)
                         .addComponent(buttonAdicionar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -168,7 +175,9 @@ public class Vendas extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jLabel1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(iconVolta))
                 .addGap(68, 68, 68)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -200,7 +209,9 @@ public class Vendas extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,7 +224,9 @@ public class Vendas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,25 +237,30 @@ public class Vendas extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void inputValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputValorActionPerformed
+    private void buttonFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFinalizarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_inputValorActionPerformed
+    }//GEN-LAST:event_buttonFinalizarActionPerformed
 
-    private void inputProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputProdutoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputProdutoActionPerformed
+    private void buttonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarActionPerformed
+
+    }//GEN-LAST:event_buttonAdicionarActionPerformed
 
     private void inputVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputVendedorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputVendedorActionPerformed
 
-    private void buttonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarActionPerformed
-        
-    }//GEN-LAST:event_buttonAdicionarActionPerformed
-
-    private void buttonFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFinalizarActionPerformed
+    private void inputProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputProdutoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_buttonFinalizarActionPerformed
+    }//GEN-LAST:event_inputProdutoActionPerformed
+
+    private void inputValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputValorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputValorActionPerformed
+
+    private void iconVoltaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iconVoltaMouseClicked
+        new FramePrincipal().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_iconVoltaMouseClicked
 
  static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -279,6 +297,7 @@ public class Vendas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdicionar;
     private javax.swing.JButton buttonFinalizar;
+    private javax.swing.JLabel iconVolta;
     private javax.swing.JTextField inputProduto;
     private javax.swing.JSpinner inputQtde;
     private javax.swing.JTextField inputValor;
