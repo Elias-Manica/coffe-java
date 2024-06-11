@@ -4,7 +4,7 @@
 
 package com.mycompany.coffeejava;
 
-import telas.FramePrincipal;
+import telas.Login;
 
 /**
  *
@@ -13,6 +13,6 @@ import telas.FramePrincipal;
 public class CoffeeJava {
 
     public static void main(String[] args) {
-        new FramePrincipal().setVisible(true);
+        new Login().setVisible(true);
     }
 }
