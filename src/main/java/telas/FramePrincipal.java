@@ -54,13 +54,14 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 102));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("O que você deseja fazer?");
 
         jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(204, 102, 0));
         jButton1.setText("Trocar de conta");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,9 +70,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
 
         jButton2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(204, 102, 0));
         jButton2.setText("Adicionar vendas");
 
         jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(204, 102, 0));
         jButton3.setText("Avaliar ultimas vendas");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,6 +83,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
 
         jButton4.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(204, 102, 0));
         jButton4.setText("Adicionar ao estoque");
 
         iconEstoque.setForeground(new java.awt.Color(255, 255, 255));

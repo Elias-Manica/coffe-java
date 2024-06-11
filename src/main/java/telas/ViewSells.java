@@ -52,7 +52,7 @@ public class ViewSells extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(255, 204, 102));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 14)); // NOI18N
@@ -88,6 +88,7 @@ public class ViewSells extends javax.swing.JFrame {
         });
 
         jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(204, 102, 0));
         jButton1.setText("Adicionar Venda");
 
         labelPic.setForeground(new java.awt.Color(255, 255, 255));
