@@ -150,7 +150,7 @@ public class items extends javax.swing.JFrame {
         });
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setForeground(new java.awt.Color(153, 102, 0));
+        jButton1.setForeground(new java.awt.Color(204, 102, 0));
         jButton1.setText("Adicionar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,11 +159,11 @@ public class items extends javax.swing.JFrame {
         });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setForeground(new java.awt.Color(153, 102, 0));
+        jButton2.setForeground(new java.awt.Color(204, 102, 0));
         jButton2.setText("Editar");
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
-        jButton3.setForeground(new java.awt.Color(153, 102, 0));
+        jButton3.setForeground(new java.awt.Color(204, 102, 0));
         jButton3.setText("Remover");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -285,12 +285,12 @@ public class items extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(257, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(241, 241, 241)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(721, Short.MAX_VALUE)))
+                    .addContainerGap(749, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
