@@ -5,6 +5,7 @@
 package com.mycompany.coffeejava;
 
 import telas.FramePrincipal;
+import telas.Vendas;
 
 /**
  *
@@ -14,5 +15,6 @@ public class CoffeeJava {
 
     public static void main(String[] args) {
         new FramePrincipal().setVisible(true);
+        new Vendas().setVisible(true);
     }
 }

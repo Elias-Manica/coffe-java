@@ -37,27 +37,28 @@ public class Vendas extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel2.setBackground(new java.awt.Color(255, 204, 102));
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(255, 102, 0));
         jLabel1.setText("Vendas");
 
         labelProduto.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        labelProduto.setForeground(new java.awt.Color(255, 255, 255));
+        labelProduto.setForeground(new java.awt.Color(255, 102, 0));
         labelProduto.setText("Produto");
 
         labelValor.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        labelValor.setForeground(new java.awt.Color(255, 255, 255));
+        labelValor.setForeground(new java.awt.Color(255, 102, 0));
         labelValor.setText("Valor");
 
         labelVendedor.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        labelVendedor.setForeground(new java.awt.Color(255, 255, 255));
+        labelVendedor.setForeground(new java.awt.Color(255, 102, 0));
         labelVendedor.setText("Vendedor");
 
         inputValor.setBackground(new java.awt.Color(255, 255, 255));
         inputValor.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         inputValor.setForeground(new java.awt.Color(0, 0, 0));
+        inputValor.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputValorActionPerformed(evt);
@@ -67,6 +68,7 @@ public class Vendas extends javax.swing.JFrame {
         inputProduto.setBackground(new java.awt.Color(255, 255, 255));
         inputProduto.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         inputProduto.setForeground(new java.awt.Color(0, 0, 0));
+        inputProduto.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputProdutoActionPerformed(evt);
@@ -76,6 +78,7 @@ public class Vendas extends javax.swing.JFrame {
         inputVendedor.setBackground(new java.awt.Color(255, 255, 255));
         inputVendedor.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         inputVendedor.setForeground(new java.awt.Color(0, 0, 0));
+        inputVendedor.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputVendedorActionPerformed(evt);
@@ -83,12 +86,12 @@ public class Vendas extends javax.swing.JFrame {
         });
 
         labelQtde.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        labelQtde.setForeground(new java.awt.Color(255, 255, 255));
+        labelQtde.setForeground(new java.awt.Color(255, 102, 0));
         labelQtde.setText("Quantidade");
 
         buttonAdicionar.setBackground(new java.awt.Color(255, 255, 255));
         buttonAdicionar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        buttonAdicionar.setForeground(new java.awt.Color(0, 0, 0));
+        buttonAdicionar.setForeground(new java.awt.Color(204, 102, 0));
         buttonAdicionar.setText("Adicionar");
         buttonAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,10 +115,11 @@ public class Vendas extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tableCarrinho);
 
         inputQtde.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        inputQtde.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         buttonFinalizar.setBackground(new java.awt.Color(255, 255, 255));
         buttonFinalizar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        buttonFinalizar.setForeground(new java.awt.Color(0, 0, 0));
+        buttonFinalizar.setForeground(new java.awt.Color(204, 102, 0));
         buttonFinalizar.setText("Finalizar");
         buttonFinalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -154,27 +158,27 @@ public class Vendas extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(401, 401, 401))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(buttonFinalizar)
-                        .addGap(192, 192, 192))))
+                        .addGap(192, 192, 192))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(404, 404, 404))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelVendedor)
                             .addComponent(labelProduto))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(inputProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(inputVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(inputProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelValor)
@@ -185,12 +189,11 @@ public class Vendas extends javax.swing.JFrame {
                             .addComponent(inputQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(39, 39, 39)
                         .addComponent(buttonAdicionar)
-                        .addGap(266, 266, 266))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(buttonFinalizar)
-                        .addGap(91, 91, 91))))
+                        .addGap(112, 112, 112))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addComponent(buttonFinalizar)
+                .addGap(91, 91, 91))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -234,7 +237,7 @@ public class Vendas extends javax.swing.JFrame {
     }//GEN-LAST:event_inputVendedorActionPerformed
 
     private void buttonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_buttonAdicionarActionPerformed
 
     private void buttonFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFinalizarActionPerformed
