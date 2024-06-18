@@ -4,6 +4,8 @@
 
 package com.mycompany.coffeejava;
 
+import apoio.ConexaoBD;
+import javax.swing.JOptionPane;
 import telas.Login;
 
 /**
@@ -13,6 +15,11 @@ import telas.Login;
 public class CoffeeJava {
 
     public static void main(String[] args) {
-        new Login().setVisible(true);
+        
+        if(ConexaoBD.getInstance().getConnection() != null) {
+            new Login().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro ao conectar com o banco de dados!");
+        }
     }
 }
