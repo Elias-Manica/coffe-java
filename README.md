@@ -7,6 +7,7 @@
 CREATE DATABASE coffee-java;
 
 -- Criação da tabela de usuários para login
+
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -14,6 +15,7 @@ CREATE TABLE usuarios (
 );
 
 -- Criação da tabela de produtos
+
 CREATE TABLE produtos (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -22,6 +24,7 @@ CREATE TABLE produtos (
 );
 
 -- Criação da tabela de estoque
+
 CREATE TABLE estoque (
     id SERIAL PRIMARY KEY,
     produto_id INT REFERENCES produtos(id) ON DELETE CASCADE,
@@ -29,6 +32,7 @@ CREATE TABLE estoque (
 );
 
 -- Criação da tabela de vendas
+
 CREATE TABLE vendas (
     id SERIAL PRIMARY KEY,
     data_venda TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -36,6 +40,7 @@ CREATE TABLE vendas (
 );
 
 -- Criação da tabela de itens de vendas
+
 CREATE TABLE itens_venda (
     id SERIAL PRIMARY KEY,
     venda_id INT REFERENCES vendas(id) ON DELETE CASCADE,
