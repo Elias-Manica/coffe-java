@@ -93,3 +93,5 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
+-- Exemplo de uso da função para registrar uma venda
+-- SELECT registrar_venda('[{"produto_id": 1, "quantidade": 2, "preco": 4.50}, {"produto_id": 3, "quantidade": 1, "preco": 3.50}]');
