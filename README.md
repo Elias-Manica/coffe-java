@@ -50,21 +50,26 @@ CREATE TABLE itens_venda (
 );
 
 -- Insere um usuário de exemplo (senha deve ser armazenada como um hash)
+
 INSERT INTO usuarios (email, senha) VALUES ('admin@cafeimaginario.com', 'senha123');
 
 -- Inserir produtos de exemplo
+
 INSERT INTO produtos (nome, categoria, preco) VALUES 
 ('Café Expresso', 'Bebida', 4.50),
 ('Cappuccino', 'Bebida', 6.00),
 ('Croissant', 'Comida', 3.50);
 
 -- Inserir estoque inicial de produtos
+
 INSERT INTO estoque (produto_id, quantidade) VALUES 
 (1, 100), -- 100 unidades de Café Expresso
 (2, 50),  -- 50 unidades de Cappuccino
 (3, 30);  -- 30 unidades de Croissant
 
 -- Função para registrar uma venda
+
+```
 CREATE OR REPLACE FUNCTION registrar_venda(produtos_vendidos JSON) RETURNS VOID AS $$
 DECLARE
     nova_venda_id INT;
@@ -86,3 +91,5 @@ BEGIN
     END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+```
+
