@@ -67,31 +67,3 @@ INSERT INTO estoque (produto_id, quantidade) VALUES
 (2, 50),  -- 50 unidades de Cappuccino
 (3, 30);  -- 30 unidades de Croissant
 
--- Função para registrar uma venda
-
-```
-CREATE OR REPLACE FUNCTION registrar_venda(produtos_vendidos JSON) RETURNS VOID AS $$
-DECLARE
-    nova_venda_id INT;
-    produto RECORD;
-BEGIN
-    -- Inserir uma nova venda
-    INSERT INTO vendas (total) VALUES (0) RETURNING id INTO nova_venda_id;
-
-    -- Iterar sobre os produtos vendidos e inserir na tabela itens_venda
-    FOR produto IN SELECT * FROM json_to_recordset(produtos_vendidos) AS (produto_id INT, quantidade INT, preco DECIMAL(10,2)) LOOP
-        INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco_unitario) 
-        VALUES (nova_venda_id, produto.produto_id, produto.quantidade, produto.preco);
-
-        -- Atualizar o estoque
-        UPDATE estoque SET quantidade = quantidade - produto.quantidade WHERE produto_id = produto.produto_id;
-
-        -- Atualizar o total da venda
-        UPDATE vendas SET total = total + (produto.quantidade * produto.preco) WHERE id = nova_venda_id;
-    END LOOP;
-END;
-$$ LANGUAGE plpgsql;
-```
-
--- Exemplo de uso da função para registrar uma venda
--- SELECT registrar_venda('[{"produto_id": 1, "quantidade": 2, "preco": 4.50}, {"produto_id": 3, "quantidade": 1, "preco": 3.50}]');
