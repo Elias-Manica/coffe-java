@@ -51,7 +51,7 @@ CREATE TABLE itens_venda (
 
 -- Insere um usuário de exemplo (senha deve ser armazenada como um hash)
 
-INSERT INTO usuarios (email, senha) VALUES ('admin@cafeimaginario.com', 'senha123');
+INSERT INTO usuarios (email, senha) VALUES ('admin@gmail.com', 'senha123');
 
 -- Inserir produtos de exemplo
 
