@@ -5,6 +5,7 @@
 package dao;
 
 import apoio.ConexaoBD;
+import apoio.DateRenderer;
 import apoio.IDAOT;
 import entidades.VerVendas;
 import java.sql.ResultSet;
@@ -50,10 +51,9 @@ public class VerVendasDAO implements IDAOT<VerVendas>  {
     }
 
     
-    public void popularTabela(JTable tabela, String criterio) {
-        
+    public void popularTabela(JTable tabela, String criterioData) {
         ResultSet resultadoQ;
-        
+
         // dados da tabela
         Object[][] dadosTabela = null;
 
@@ -69,7 +69,7 @@ public class VerVendasDAO implements IDAOT<VerVendas>  {
                 + "SELECT count(*) "
                 + "FROM vendas "
                 + "WHERE "
-                + "data_venda::text ILIKE '%" + criterio + "%'");
+                + "data_venda::text ILIKE '%" + criterioData + "%'");
 
             resultadoQ.next();
 
@@ -87,20 +87,12 @@ public class VerVendasDAO implements IDAOT<VerVendas>  {
                 + "SELECT * "
                 + "FROM vendas "
                 + "WHERE "
-                + "data_venda::text ILIKE '%" + criterio + "%' ORDER BY id");
+                + "data_venda::text ILIKE '%" + criterioData + "%' ORDER BY id");
 
             while (resultadoQ.next()) {
-
                 dadosTabela[lin][0] = resultadoQ.getInt("id");
-                dadosTabela[lin][1] = resultadoQ.getString("data_venda");
+                dadosTabela[lin][1] = resultadoQ.getTimestamp("data_venda");
                 dadosTabela[lin][2] = resultadoQ.getString("total");
-
-                // caso a coluna precise exibir uma imagem
-//                if (resultadoQ.getBoolean("Situacao")) {
-//                    dadosTabela[lin][2] = new ImageIcon(getClass().getClassLoader().getResource("Interface/imagens/status_ativo.png"));
-//                } else {
-//                    dadosTabela[lin][2] = new ImageIcon(getClass().getClassLoader().getResource("Interface/imagens/status_inativo.png"));
-//                }
                 lin++;
             }
         } catch (Exception e) {
@@ -108,31 +100,16 @@ public class VerVendasDAO implements IDAOT<VerVendas>  {
             System.out.println(e);
         }
 
-        // configuracoes adicionais no componente tabela
         tabela.setModel(new DefaultTableModel(dadosTabela, cabecalho) {
             @Override
-            // quando retorno for FALSE, a tabela nao é editavel
             public boolean isCellEditable(int row, int column) {
                 return false;
-                /*  
-                 if (column == 3) {  // apenas a coluna 3 sera editavel
-                 return true;
-                 } else {
-                 return false;
-                 }
-                 */
-            }
-
-            // alteracao no metodo que determina a coluna em que o objeto ImageIcon devera aparecer
-            @Override
-            public Class getColumnClass(int column) {
-
-                if (column == 2) {
-//                    return ImageIcon.class;
-                }
-                return Object.class;
             }
         });
+
+        // Aplicar o DateRenderer na coluna de data
+        TableColumn dateColumn = tabela.getColumnModel().getColumn(1);
+        dateColumn.setCellRenderer(new DateRenderer());
 
         // permite selecao de apenas uma linha da tabela
         tabela.setSelectionMode(0);
@@ -148,26 +125,9 @@ public class VerVendasDAO implements IDAOT<VerVendas>  {
                 case 1:
                     column.setPreferredWidth(140);
                     break;
-//                case 2:
-//                    column.setPreferredWidth(14);
-//                    break;
             }
         }
-        // renderizacao das linhas da tabela = mudar a cor
-//        jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-//
-//            @Override
-//            public Component getTableCellRendererComponent(JTable table, Object value,
-//                    boolean isSelected, boolean hasFocus, int row, int column) {
-//                super.getTableCellRendererComponent(table, value, isSelected,
-//                        hasFocus, row, column);
-//                if (row % 2 == 0) {
-//                    setBackground(Color.GREEN);
-//                } else {
-//                    setBackground(Color.LIGHT_GRAY);
-//                }
-//                return this;
-//            }
-//        });
     }
+
+
 }
