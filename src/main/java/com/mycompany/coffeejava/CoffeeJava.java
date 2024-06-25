@@ -15,7 +15,6 @@ import telas.Login;
 public class CoffeeJava {
 
     public static void main(String[] args) {
-        
         if(ConexaoBD.getInstance().getConnection() != null) {
             new Login().setVisible(true);
         } else {
