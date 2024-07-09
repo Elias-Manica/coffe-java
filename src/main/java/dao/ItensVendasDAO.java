@@ -9,6 +9,7 @@ import apoio.IDAOT;
 import entidades.ItensVendas;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JTable;
@@ -78,7 +79,7 @@ public class ItensVendasDAO implements IDAOT<ItensVendas> {
             dadosTabela[lin][4] = rs.getFloat("preco_unitario");
             lin++;
         }
-    } catch (Exception e) {
+    } catch (SQLException e) {
         System.out.println("Erro ao consultar itens da venda: " + e);
     }
 
