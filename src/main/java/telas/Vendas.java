@@ -1,24 +1,410 @@
-
 package telas;
 
+import apoio.ConexaoBD;
 import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.ImageIcon;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author dmate
  */
 public class Vendas extends javax.swing.JFrame {
+
     ImageIcon iconBack = new ImageIcon("icon-volta.png");
+
     public Vendas() {
         initComponents();
         setIconImage(iconVolta, iconBack);
+        carregarProdutos();
+
+        inputProduto.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String produtoSelecionado = (String) inputProduto.getSelectedItem();
+                    carregarValorProduto(produtoSelecionado);
+                }
+            }
+        });
     }
+
     private void setIconImage(javax.swing.JLabel label, ImageIcon icon) {
         Image image = icon.getImage();
-        Image scaledImage = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH); 
+        Image scaledImage = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
         label.setIcon(new ImageIcon(scaledImage));
         label.setText("");
+    }
+
+    private void carregarProdutos() {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "SELECT nome FROM produtos";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+
+            inputProduto.removeAllItems();
+            inputProduto.addItem("Selecione:");
+
+            while (rs.next()) {
+                String nomeProduto = rs.getString("nome");
+                inputProduto.addItem(nomeProduto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    ConexaoBD.getInstance().closeConnection(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void carregarValorProduto(String nomeProduto) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "SELECT preco FROM produtos WHERE nome = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, nomeProduto);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                double precoProduto = rs.getDouble("preco");
+                inputValor.setText("R$: " + String.valueOf(precoProduto));
+            } else {
+                inputValor.setText("");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            inputValor.setText("Erro ao obter preço do produto");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int getCodigoProduto(String nomeProduto) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "SELECT id FROM produtos WHERE nome = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, nomeProduto);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                throw new SQLException("Produto não encontrado");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; 
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    ConexaoBD.getInstance().closeConnection(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void atualizarCampoDeTexto(String produtoSelecionado) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "SELECT preco FROM produtos WHERE nome = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, produtoSelecionado); 
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                double valorProduto = rs.getDouble("preco");
+                inputValor.setText("R$: " + String.valueOf(valorProduto));
+            } else {
+                inputValor.setText("Valor não encontrado");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            inputValor.setText("Erro ao obter valor do produto");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    ConexaoBD.getInstance().closeConnection(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean verificarEstoque(int codigoProduto, int quantidade) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "SELECT quantidade FROM estoque WHERE produto_id = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, codigoProduto); 
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int quantidadeProduto = rs.getInt("quantidade");
+                return quantidadeProduto >= quantidade;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    ConexaoBD.getInstance().closeConnection(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public boolean removerDoEstoque(int codigoProduto, int quantidade) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "UPDATE estoque SET quantidade = quantidade - ? WHERE produto_id = ?";
+
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, quantidade);
+            pstmt.setInt(2, codigoProduto);
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    ConexaoBD.getInstance().closeConnection(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void adicionarCarrinho() {
+        if (inputProduto.getSelectedItem().equals("Selecione:")) {
+            JOptionPane.showMessageDialog(this, "Selecione um produto.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String produtoSelecionado = (String) inputProduto.getSelectedItem();
+
+        int codigoProduto = getCodigoProduto(produtoSelecionado);
+
+        String quantidadeStr = String.valueOf(inputQtde.getValue());
+        int quantidade = Integer.parseInt(quantidadeStr);
+
+        String valorStr = inputValor.getText().replace("R$: ", "");
+        double valor = Double.parseDouble(valorStr);
+
+        double subtotal = quantidade * valor;
+
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableCarrinho.getModel();
+
+        if (verificarEstoque(codigoProduto, quantidade)) {
+            System.out.println("CODIGO PRODUTO: " + codigoProduto);
+            model.addRow(new Object[]{codigoProduto, produtoSelecionado, quantidade, "R$: " + valor, "R$: " + subtotal});
+            removerDoEstoque(codigoProduto, quantidade);
+            JOptionPane.showMessageDialog(null, "Item adicionado no Carrinho");
+        } else {
+            JOptionPane.showMessageDialog(this, "Quantidade não disponível no estoque.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        inputProduto.setSelectedIndex(0);
+        inputQtde.setValue(1);
+        inputValor.setText("");
+    }
+
+    public class ItemVenda {
+
+        private int produtoId;
+        private int quantidade;
+        private double precoUnitario;
+
+        public ItemVenda(int produtoId, int quantidade, double precoUnitario) {
+            this.produtoId = produtoId;
+            this.quantidade = quantidade;
+            this.precoUnitario = precoUnitario;
+        }
+
+        public int getProdutoId() {
+            return produtoId;
+        }
+
+        public int getQuantidade() {
+            return quantidade;
+        }
+
+        public double getPrecoUnitario() {
+            return precoUnitario;
+        }
+    }
+
+    public int criarVenda(double total) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int vendaId = -1;
+
+        try {
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "INSERT INTO vendas (total) VALUES (?) RETURNING id";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setDouble(1, total);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                vendaId = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    ConexaoBD.getInstance().closeConnection(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return vendaId;
+    }
+
+    public boolean inserirItemVenda(int vendaId, int produtoId, int quantidade, double precoUnitario) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = ConexaoBD.getInstance().getConnection();
+
+            String sql = "INSERT INTO itens_venda (venda_id, produto_id, quantidade, preco_unitario) VALUES (?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, vendaId);
+            pstmt.setInt(2, produtoId);
+            pstmt.setInt(3, quantidade);
+            pstmt.setDouble(4, precoUnitario);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (conn != null) {
+                    ConexaoBD.getInstance().closeConnection(conn);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -32,15 +418,15 @@ public class Vendas extends javax.swing.JFrame {
         labelValor = new javax.swing.JLabel();
         labelVendedor = new javax.swing.JLabel();
         inputValor = new javax.swing.JTextField();
-        inputProduto = new javax.swing.JTextField();
         inputVendedor = new javax.swing.JTextField();
         labelQtde = new javax.swing.JLabel();
         buttonAdicionar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableCarrinho = new javax.swing.JTable();
-        inputQtde = new javax.swing.JSpinner();
         buttonFinalizar = new javax.swing.JButton();
         iconVolta = new javax.swing.JLabel();
+        inputProduto = new javax.swing.JComboBox<>();
+        inputQtde = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,24 +450,20 @@ public class Vendas extends javax.swing.JFrame {
         labelVendedor.setForeground(new java.awt.Color(255, 102, 0));
         labelVendedor.setText("Vendedor");
 
+        inputValor.setEditable(false);
         inputValor.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        inputValor.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputValorActionPerformed(evt);
             }
         });
-
-        inputProduto.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        inputProduto.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        inputProduto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputProdutoActionPerformed(evt);
+        inputValor.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                inputValorVetoableChange(evt);
             }
         });
 
         inputVendedor.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        inputVendedor.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         inputVendedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputVendedorActionPerformed(evt);
@@ -114,9 +496,6 @@ public class Vendas extends javax.swing.JFrame {
         tableCarrinho.setRowHeight(25);
         jScrollPane1.setViewportView(tableCarrinho);
 
-        inputQtde.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        inputQtde.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-
         buttonFinalizar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         buttonFinalizar.setForeground(new java.awt.Color(204, 102, 0));
         buttonFinalizar.setText("Finalizar");
@@ -133,6 +512,9 @@ public class Vendas extends javax.swing.JFrame {
             }
         });
 
+        inputQtde.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        inputQtde.setValue(1);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -140,24 +522,22 @@ public class Vendas extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelProduto)
-                                    .addComponent(inputValor, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelValor)
-                                    .addComponent(iconVolta))
-                                .addGap(60, 60, 60)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelQtde)
-                                    .addComponent(inputVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(labelVendedor)
-                                    .addComponent(inputQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(170, 170, 170)
-                        .addComponent(buttonAdicionar)))
+                        .addComponent(buttonAdicionar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelProduto)
+                            .addComponent(inputValor, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(labelValor)
+                            .addComponent(iconVolta)
+                            .addComponent(inputProduto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(60, 60, 60)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelQtde)
+                            .addComponent(inputVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelVendedor)
+                            .addComponent(inputQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57))
@@ -180,14 +560,15 @@ public class Vendas extends javax.swing.JFrame {
                     .addComponent(iconVolta))
                 .addGap(68, 68, 68)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelVendedor)
                             .addComponent(labelProduto))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(inputVendedor, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                            .addComponent(inputProduto))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelValor)
@@ -195,11 +576,10 @@ public class Vendas extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(inputValor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(39, 39, 39)
+                            .addComponent(inputQtde, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
                         .addComponent(buttonAdicionar)
-                        .addGap(112, 112, 112))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(112, 112, 112)))
                 .addGap(39, 39, 39)
                 .addComponent(buttonFinalizar)
                 .addGap(91, 91, 91))
@@ -238,20 +618,66 @@ public class Vendas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFinalizarActionPerformed
-        // TODO add your handling code here:
+
+        DefaultTableModel model = (DefaultTableModel) tableCarrinho.getModel();
+        int rowCount = model.getRowCount();
+
+        if (rowCount == 0) {
+            JOptionPane.showMessageDialog(null, "O carrinho está vazio.");
+            return;
+        }
+
+        double total = 0.0;
+        ArrayList<ItemVenda> itensVenda = new ArrayList<>();
+
+
+        // Calcular o total e criar a lista de itens
+        for (int i = 0; i < rowCount; i++) {
+            String produtoNome = (String) model.getValueAt(i, 1);
+            double preco = Double.parseDouble(((String) model.getValueAt(i, 3)).replace("R$: ", "").replace(",", "."));
+            int quantidade = (int) model.getValueAt(i, 2);
+
+            total += preco * quantidade;
+
+            int produtoId = getCodigoProduto(produtoNome);
+            itensVenda.add(new ItemVenda(produtoId, quantidade, preco));
+        }
+
+        // Criar a venda
+        int vendaId = criarVenda(total);
+        if (vendaId == -1) {
+            JOptionPane.showMessageDialog(null, "Erro ao criar a venda.");
+            return;
+        }
+
+        // Inserir os itens da venda
+        boolean sucesso = true;
+        for (ItemVenda item : itensVenda) {
+            if (!inserirItemVenda(vendaId, item.getProdutoId(), item.getQuantidade(), item.getPrecoUnitario())) {
+                sucesso = false;
+                break;
+            }
+
+            // Remover do estoque
+            //if (!removerDoEstoque(item.getProdutoId(), item.getQuantidade())) {;;;;
+            //    sucesso = false;
+            //    break;
+            //}
+        }
+
+        if (sucesso) {
+            JOptionPane.showMessageDialog(null, "Venda realizada com sucesso!");
+            model.setRowCount(0); // Limpar o carrinho
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro ao processar a venda.");
+        }
+
+
     }//GEN-LAST:event_buttonFinalizarActionPerformed
-
-    private void buttonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarActionPerformed
-
-    }//GEN-LAST:event_buttonAdicionarActionPerformed
 
     private void inputVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputVendedorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputVendedorActionPerformed
-
-    private void inputProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputProdutoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inputProdutoActionPerformed
 
     private void inputValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputValorActionPerformed
         // TODO add your handling code here:
@@ -262,7 +688,24 @@ public class Vendas extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_iconVoltaMouseClicked
 
- static void main(String args[]) {
+    private void inputValorVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_inputValorVetoableChange
+        inputProduto.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    String produtoSelecionado = (String) inputProduto.getSelectedItem();
+                    System.out.println("Produto selecionado: " + produtoSelecionado);
+                    atualizarCampoDeTexto(produtoSelecionado);
+                }
+            }
+        });
+    }//GEN-LAST:event_inputValorVetoableChange
+
+    private void buttonAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAdicionarActionPerformed
+        adicionarCarrinho();
+    }//GEN-LAST:event_buttonAdicionarActionPerformed
+
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -273,16 +716,24 @@ public class Vendas extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Vendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vendas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Vendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vendas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Vendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vendas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Vendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vendas.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -298,7 +749,7 @@ public class Vendas extends javax.swing.JFrame {
     private javax.swing.JButton buttonAdicionar;
     private javax.swing.JButton buttonFinalizar;
     private javax.swing.JLabel iconVolta;
-    private javax.swing.JTextField inputProduto;
+    private javax.swing.JComboBox<String> inputProduto;
     private javax.swing.JSpinner inputQtde;
     private javax.swing.JTextField inputValor;
     private javax.swing.JTextField inputVendedor;
